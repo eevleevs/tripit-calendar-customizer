@@ -27,6 +27,21 @@ GET /feed/ical/private/<token>/tripit.ics
 > LTS and running `wrangler dev` with it works too. `bun test`, `typecheck` and
 > `deploy` all run fine under Bun.
 
+## Deployments
+
+Primary path: pushes to `main` auto-deploy through Cloudflare Workers Builds
+(Git integration), connected in the dashboard under
+**Workers & Pages → tripit-calendar-customizer → Settings → Builds → Connect**
+(repo `eevleevs/tripit-calendar-customizer`, branch `main`, build command
+`npm install`, deploy command left at the default `npx wrangler deploy`).
+Cloudflare auto-generates the API token builds use; build logs appear under
+the worker's **Deployments → View build history**, and as check runs on
+GitHub commits.
+
+Fallback: `bun run deploy` from a checkout (`bun x wrangler login` required).
+Once the Git integration is connected, prefer push-to-deploy — CLI deploys and
+Git builds overwrite each other's active deployment (last writer wins).
+
 ## Behavior
 
 - **Path matching**: only `/feed/ical/private/<token>/tripit.ics` is served;
